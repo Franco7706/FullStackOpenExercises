@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: The user has already entered the page and proceeds to create a new note
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa, payload: {"content":"tryingSPA","date":"2025-07-17T03:34:30.532Z"}
+    activate server
+    server-->>browser: {"message":"note created"}, status code: 201 - created
+    deactivate server
+
+    Note right of browser: The browser executes a function that redraws the notes as the server confirms the creation of the new note

@@ -4,7 +4,7 @@ sequenceDiagram
 
     Note right of browser: The user has already entered the page and proceeds to create a new note
 
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note, payload: note=example
     activate server
     server-->>browser: HTTP status code 302 - URL Redirect
     deactivate server
