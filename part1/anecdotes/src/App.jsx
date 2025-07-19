@@ -41,6 +41,7 @@ const App = () => {
       <Button onClick={nextHandler} text='next anecdote'/>
       <h1>Anecdote with most votes</h1>
       <p>{anecdotes[mostVoted]}</p>
+      <p> has {votes[mostVoted]} votes</p>
       <p></p>
     </div>
   )
