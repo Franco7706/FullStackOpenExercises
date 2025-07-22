@@ -86,7 +86,7 @@ const App = () => {
     }
   }
 
-  const peopleToShow=newFilter.length===0?persons:persons.filter(person=>person.name.toLowerCase().includes(newFilter))
+  const peopleToShow=newFilter.length===0?persons:persons.filter(person=>person.name.toLowerCase().includes(newFilter.toLowerCase()))
 
   const handleFilterChange=(event)=>{
     setNewFilter(event.target.value)
