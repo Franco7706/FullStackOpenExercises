@@ -66,7 +66,7 @@ const App = () => {
       })
     }
     else{
-      const idnew=persons.reduce((accumulator,currentValue)=>Math.max(accumulator,currentValue.id),0)+1
+      const idnew=persons.length===0?1:persons.reduce((accumulator,currentValue)=>Math.max(accumulator,currentValue.id),0)+1
       console.log(idnew)
       const person={
         name: newName,
