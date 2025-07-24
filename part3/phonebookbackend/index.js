@@ -104,7 +104,7 @@ app.post('/api/persons', (request,response,next)=>{
 
 })
 
-app.put('api/persons/:id', (request,response,next)=>{
+app.put('/api/persons/:id', (request,response,next)=>{
   const {name,number} = request.body
   Person.findById(request.params.id)
   .then(
@@ -114,10 +114,10 @@ app.put('api/persons/:id', (request,response,next)=>{
       }
       person.name=name
       person.number=number
-      
+
       return person.save()
-      .then(updatedNote=>{
-        response.json(updatedNote)
+      .then(updatedPerson=>{
+        response.json(updatedPerson)
       })
     }
   )
