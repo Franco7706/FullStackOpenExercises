@@ -66,12 +66,9 @@ const App = () => {
       })
     }
     else{
-      const idnew=persons.reduce((accumulator,currentValue)=>Math.max(accumulator,currentValue.id),0)+1
-      console.log(idnew)
       const person={
         name: newName,
-        number: newNumber,
-        id: idnew.toString()
+        number: newNumber
       }
       personService
       .addPerson(person)
