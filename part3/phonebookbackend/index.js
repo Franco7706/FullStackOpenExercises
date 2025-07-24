@@ -41,7 +41,7 @@ app.get('/info',(request,response)=>{
   })  
 })
 
-app.get('/api/persons/:id', (request,response)=>{
+app.get('/api/persons/:id', (request,response,next)=>{
   Person.findById(request.params.id)
   .then(person=>{
     if(person){
@@ -54,7 +54,7 @@ app.get('/api/persons/:id', (request,response)=>{
   .catch(error=>next(error))
 })
 
-app.delete('/api/persons/:id', (request,response)=>{
+app.delete('/api/persons/:id', (request,response,next)=>{
   Person.findByIdAndDelete(request.params.id)
   .then(person=>{
     if(person){
@@ -67,7 +67,7 @@ app.delete('/api/persons/:id', (request,response)=>{
   .catch(error=>next(error))
 })
 
-app.post('/api/persons', (request,response)=>{
+app.post('/api/persons', (request,response,next)=>{
   const body=request.body
   
   if(!body.name){
@@ -100,7 +100,28 @@ app.post('/api/persons', (request,response)=>{
       })
     }
   })
+  .catch(error=>next(error))
 
+})
+
+app.put('api/persons/:id', (request,response,next)=>{
+  const {name,number} = request.body
+  Person.findById(request.params.id)
+  .then(
+    person=>{
+      if(!person){
+        return response.status(404).end()
+      }
+      person.name=name
+      person.number=number
+      
+      return person.save()
+      .then(updatedNote=>{
+        response.json(updatedNote)
+      })
+    }
+  )
+  .catch(error=>next(error))
 })
 
 const unknownEndPoint = (request,response) =>{
