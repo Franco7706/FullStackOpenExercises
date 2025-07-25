@@ -80,6 +80,10 @@ const App = () => {
         setMessage({text:`Added ${data.name}`,error:false})
         setTimeout(()=>{setMessage({text:null,error:null})},5000)
       })
+      .catch(error=>{
+        setMessage({text:error.response.data.error,error:true})
+        setTimeout(()=>{setMessage({text:null,error:null})},5000)
+      })
     }
   }
 
