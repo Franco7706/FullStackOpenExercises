@@ -57,12 +57,18 @@ const App = () => {
         setTimeout(()=>{setMessage({text:null,error:null})},5000)
       })
       .catch(error=>{
-        setMessage({text:`Information of ${changedPerson.name} has already been removed from the server`,error:true})
-        setTimeout(()=>{setMessage({text:null,error:null})},5000)
-        setPersons(persons.filter(person=>person.id!==changedPerson.id))
-        
-        setNewName('')
-        setNewNumber('')
+        if(error.response.status===404){
+          setMessage({text:`Information of ${changedPerson.name} has already been removed from the server`,error:true})
+          setTimeout(()=>{setMessage({text:null,error:null})},5000)
+          setPersons(persons.filter(person=>person.id!==changedPerson.id))
+          
+          setNewName('')
+          setNewNumber('')
+        }
+        else{
+          setMessage({text:error.response.data.error,error:true})
+          setTimeout(()=>{setMessage({text:null,error:null})},5000)
+        }
       })
     }
     else{
