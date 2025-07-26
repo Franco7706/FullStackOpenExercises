@@ -174,7 +174,7 @@ describe('when there are initially some blogs saved', () => {
       
       assert.strictEqual(response.body.url,newBlog.url)
       assert.strictEqual(response.body.likes,newBlog.likes)
-
+      assert.strictEqual(response.body.title,helper.initialBlogs[0].title)
     })
 
     test('fails when updating a not existing blog', async() => {
