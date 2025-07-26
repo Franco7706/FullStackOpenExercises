@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express') // express-async-errors is not needed with express 5
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 const logger = require('./utils/logger')
