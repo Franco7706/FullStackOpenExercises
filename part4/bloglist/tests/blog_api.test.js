@@ -41,7 +41,7 @@ describe('when there are initially some blogs saved', () => {
     assert.strictEqual('_id' in blogs[0], false)
   })
 
-  describe('addition of a new note', () => {
+  describe('addition of a new blog', () => {
     test('succeeds with valid data', async () => {
       const newBlog = {
         title: "First class algebra",
