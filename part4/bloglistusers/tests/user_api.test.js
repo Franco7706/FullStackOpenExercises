@@ -6,14 +6,14 @@ const app = require('../app')
 const helper = require('./test_helper')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-const blog = require('../models/blog')
+const Blog = require('../models/blog')
 
 const api = supertest(app)
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-    await blog.deleteMany({})
+    await Blog.deleteMany({})
 
     const passwordHash = await bcrypt.hash('sekret', 10)
     const user = new User({ username: 'root', passwordHash })
@@ -107,7 +107,7 @@ describe('when there is initially one user in db', () => {
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
   })
 
-  test('creation of a new blog succeeds with a correct userId', async () => {
+  test('creation of a new blog succeeds with a correct userId', async () => { // worked before token implementation, run blog_api.test.js for an adequate test for the creation of a new blog
     const users = await helper.usersInDb()
     const newBlog = {
       "title": "Introduction to Arithmetics",

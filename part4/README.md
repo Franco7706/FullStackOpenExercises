@@ -3,4 +3,5 @@
 ## npm run test tests/blog_api.test.js
 # for exercises from 4.15
 ### bloglistusers
-##  npm run test tests/user_api.test.js
+## npm run test tests/user_api.test.js
+## npm run test tests/blog_api.test.js
