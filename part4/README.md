@@ -1,7 +1,7 @@
 # for exercises 4.1-4.14
-### bloglist
+## /bloglist
 ## npm run test tests/blog_api.test.js
 # for exercises from 4.15
-### bloglistusers
+## /bloglistusers
 ## npm run test tests/user_api.test.js
 ## npm run test tests/blog_api.test.js
