@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
-  
+
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog({...newBlog})
+    createBlog({ ...newBlog })
     setNewBlog({ title: '', author: '', url: '' })
   }
 
@@ -31,34 +31,34 @@ const BlogForm = ({ createBlog }) => {
     setNewBlog(replaceBlog)
   }
   return(
-  <>
-    <h2>create new</h2>
-    <form onSubmit={addBlog}>
-      <div>
+    <>
+      <h2>create new</h2>
+      <form onSubmit={addBlog}>
+        <div>
         title:
-        <input
-          value={newBlog.title}
-          onChange={handleTitleChange}
-        />
-      </div>
-      <div>
+          <input
+            value={newBlog.title}
+            onChange={handleTitleChange}
+          />
+        </div>
+        <div>
         author:
-        <input
-          value={newBlog.author}
-          onChange={handleAuthorChange}
-        />
-      </div>
-      <div>
+          <input
+            value={newBlog.author}
+            onChange={handleAuthorChange}
+          />
+        </div>
+        <div>
         url:
-        <input
-          value={newBlog.url}
-          onChange={handleUrlChange}
-        />
-      </div>
-      <button type="submit">save</button>
-    </form>
-  </>
-)
+          <input
+            value={newBlog.url}
+            onChange={handleUrlChange}
+          />
+        </div>
+        <button type="submit">save</button>
+      </form>
+    </>
+  )
 }
 
 export default BlogForm
