@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,40 +19,22 @@ const asObject = (anecdote) => {
   }
 }
 
-const sortByVotes = (anecdotes) =>{
-  return anecdotes.toSorted((a,b)=>b.votes-a.votes)
-}
+const anecdoteSlice = createSlice({
+  name: 'notes',
+  initialState: anecdotesAtStart.map(asObject),
+  reducers: {
 
-const initialState = anecdotesAtStart.map(asObject)
+    voteAnecdote(state,action) {
+      const id = action.payload
+      return state.map(anecdote => (anecdote.id === id) ? { ...anecdote, votes: anecdote.votes + 1 } : anecdote)
+    },
 
-const reducer = (state = initialState, action) => { 
-  /* I assumed that the exercise asked me to make the anecdotes sorted at all times, not just when entering the page */
-  /* To do otherwise, you would just have to: 1) export the sortByVotes function to the anecdoteList component
-  and apply it before the use of the map function, and 2) remove the use of the function in the reducer */
-  console.log('state now: ', state)
-  console.log('action', action)
-  switch (action.type) {
-    case 'VOTE_ANECDOTE':
-      return sortByVotes(state.map(anecdote=>(anecdote.id===action.payload.id)?{...anecdote,votes:anecdote.votes+1}:anecdote))
-    case 'CREATE_ANECDOTE':
-      return sortByVotes([...state,action.payload])
-    default:
-      return state 
-  }
-}
+    createAnecdote(state,action) {
+      const anecdote = asObject(action.payload)
+      return [...state, anecdote]
+    }
+  },
+})
 
-export const voteAnecdote = (id) => {
-  return {
-    type: 'VOTE_ANECDOTE',
-    payload: { id }
-  }
-}
-
-export const createAnecdote = (anecdote) => {
-  return {
-    type: 'CREATE_ANECDOTE',
-    payload: asObject(anecdote)
-  }
-}
-
-export default reducer
+export const { voteAnecdote, createAnecdote } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
