@@ -20,7 +20,10 @@ const useCountry = (name) => {
   const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/'
 
   useEffect(() => {
-    if(name==='') return undefined
+    if(name===''){
+      setCountry(undefined)
+      return
+    }
     axios.get(`${baseUrl}api/name/${name}`)
       .then(response => {
         console.log(response.data)
