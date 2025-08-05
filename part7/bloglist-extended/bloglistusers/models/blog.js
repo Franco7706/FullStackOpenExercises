@@ -23,6 +23,12 @@ const blogSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  comments: [{
+    text: {
+      type: String,
+      required: true,
+    }
+  }],
 })
 
 blogSchema.set("toJSON", {
@@ -30,6 +36,13 @@ blogSchema.set("toJSON", {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
+
+    if (returnedObject.comments && returnedObject.comments.length > 0) {
+      returnedObject.comments.forEach(comment => {
+        comment.id = comment._id.toString();
+        delete comment._id;
+      });
+    }
   },
 })
 

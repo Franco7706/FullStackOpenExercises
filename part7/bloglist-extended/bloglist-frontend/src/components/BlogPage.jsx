@@ -4,6 +4,27 @@ import { useUserValue } from "./UserContext"
 import blogService from "../services/blogs"
 import { useNavigate, useParams } from 'react-router-dom'
 import Notification from './Notification'
+import { useState } from 'react'
+
+const useField = (type) => {
+  const [value, setValue] = useState('')
+
+  const onChange = (event) => {
+    setValue(event.target.value)
+  }
+
+  const reset = (event) => {
+    setValue('')
+  }
+  return {
+    input: {
+      type,
+      value,
+      onChange
+    },
+    reset
+  }
+}
 
 const BlogPage = () => {
   const id = useParams().id
@@ -16,6 +37,7 @@ const BlogPage = () => {
   const notificationDispatch = useNotificationDispatch()
   const userValue = useUserValue()
   const navigate = useNavigate()
+  const newComment = useField('text')
 
   const printError = (exception) => {
     setNotificationWithTimeout(notificationDispatch, {
@@ -45,7 +67,14 @@ const BlogPage = () => {
     },
     onError: (exception) => { printError(exception) }
   })
-
+  const commentBlogMutation = useMutation({
+    mutationFn: blogService.postComment,
+    onSuccess: (blog) => {
+      queryClient.invalidateQueries({ queryKey: ['blogs', id]})
+      newComment.reset()
+    },
+    onError: (exception) => { printError(exception)}
+  })
   const blog = result.data
   if (!blog || !userValue) {
     return <div>Loading data...</div>
@@ -57,6 +86,11 @@ const BlogPage = () => {
   }
   const like = () => {
     updateLikeMutation.mutate({ ...blog, likes: blog.likes + 1 })
+  }
+  const createComment = (event) => {
+    event.preventDefault()
+    const commentText = newComment.input.value
+    commentBlogMutation.mutate({id: blog.id, text: commentText})
   }
   return (
     <div>
@@ -71,6 +105,18 @@ const BlogPage = () => {
           <button onClick={remove}>remove</button>
         </div>
       ) : null}
+      <h3>comments</h3>
+      <div>
+        <form onSubmit={createComment}>
+          <input {...newComment.input} />
+          <button type='submit'>add comment</button>
+        </form>
+      </div>
+      <ul>
+        {blog.comments.map(comment => (
+          <li key={comment.id}>{comment.text}</li>
+        ))}
+      </ul>
     </div>
   )
 }
