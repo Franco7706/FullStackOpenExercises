@@ -1,5 +1,5 @@
-const Blog = require("../models/blog");
-const User = require("../models/user");
+const Blog = require("../models/blog")
+const User = require("../models/user")
 
 const initialBlogs = [
   {
@@ -56,7 +56,7 @@ const initialBlogs = [
     likes: 2,
     __v: 0,
   },
-];
+]
 
 const nonExistingId = async () => {
   const blog = new Blog({
@@ -64,41 +64,41 @@ const nonExistingId = async () => {
     author: "Franco F. Gallardo",
     url: "https://example.com/example",
     likes: 12,
-  });
-  await blog.save();
-  await blog.deleteOne();
+  })
+  await blog.save()
+  await blog.deleteOne()
 
-  return blog._id.toString();
-};
+  return blog._id.toString()
+}
 
 const blogsInDb = async () => {
-  const blogs = await Blog.find({});
-  return blogs.map((blog) => blog.toJSON());
-};
+  const blogs = await Blog.find({})
+  return blogs.map((blog) => blog.toJSON())
+}
 
 const usersInDb = async () => {
-  const users = await User.find({});
-  return users.map((user) => user.toJSON());
-};
+  const users = await User.find({})
+  return users.map((user) => user.toJSON())
+}
 
 const getValidToken = async (api) => {
   const loginUser = {
     username: "Franco",
     password: "FrancoG",
-  };
-  const response = await api.post("/api/login").send(loginUser).expect(200);
-  return response.body.token;
-};
+  }
+  const response = await api.post("/api/login").send(loginUser).expect(200)
+  return response.body.token
+}
 
 const getTokenFromOtherUser = async (api) => {
   const loginUser = {
     username: "Diego",
     password: "DiegoA",
-  };
-  const response = await api.post("/api/login").send(loginUser);
+  }
+  const response = await api.post("/api/login").send(loginUser)
 
-  return response.body.token;
-};
+  return response.body.token
+}
 
 module.exports = {
   initialBlogs,
@@ -107,4 +107,4 @@ module.exports = {
   usersInDb,
   getValidToken,
   getTokenFromOtherUser,
-};
+}

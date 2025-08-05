@@ -1,32 +1,59 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import { setNotificationWithTimeout, useNotificationDispatch } from './NotificationContext'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import blogService from '../services/blogs'
+import { useUserValue } from './UserContext'
 
-const Blog = ({ blog, updateLikes, deleteBlog, showDelete }) => {
-  const [likes, setLikes] = useState(blog.likes);
-  const [visible, setVisible] = useState(false);
-  const [deleted, setDeleted] = useState(false);
+const Blog = ({ blog }) => {
+  const [likes, setLikes] = useState(blog.likes)
+  const [visible, setVisible] = useState(false)
+  const queryClient = useQueryClient()
+  const notificationDispatch = useNotificationDispatch()
+  const userValue = useUserValue()
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
+  const printError = (exception) => {
+    setNotificationWithTimeout(notificationDispatch, {
+      text: exception.response.data.error,
+      error: true,
+    })
+  }
+  const updateLikeMutation = useMutation({
+    mutationFn: blogService.update,
+    // onSuccess: () => { setLikes(likes + 1) }, // i could invalidate queries here for the page to re-render and the blogs to be sorted again but it may be unnecessary
+    onError: (exception) => {
+      printError(exception)
+      queryClient.invalidateQueries('blogs')
+    }
+  })
+  const deleteBlogMutation = useMutation({
+    mutationFn: blogService.deleteB,
+    onSuccess: (blog) => {
+      queryClient.invalidateQueries('blogs')
+      setNotificationWithTimeout(notificationDispatch, {
+        text: `Blog ${blog.title} by ${blog.author} deleted`,
+        error: false,
+      })
+    },
+    onError: (exception) => { printError(exception) }
+  })
   const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
   const like = () => {
-    updateLikes({ ...blog, likes: likes + 1 });
-    setLikes(likes + 1);
-  };
+    updateLikeMutation.mutate({ ...blog, likes: likes + 1 })
+    setLikes(likes + 1) // to make the response time slower for the like increase to show
+    // if the result is not success the likes still increase but if there's an error probably the blog shouldn't even be there
+  }
   const remove = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      if (await deleteBlog(blog)) {
-        setDeleted(true);
-      }
+      deleteBlogMutation.mutate(blog)
     }
-  };
-  if (deleted) {
-    return null;
   }
   return (
     <div>
@@ -47,7 +74,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, showDelete }) => {
               <button onClick={like}>like</button>{' '}
             </div>
             <div> {blog.user.name}</div>
-            {showDelete ? (
+            {userValue.name===blog.user.name ? (
               <div>
                 {' '}
                 <button onClick={remove}>remove</button>
@@ -57,7 +84,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, showDelete }) => {
         ) : null}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
