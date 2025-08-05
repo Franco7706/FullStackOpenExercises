@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
 import { setNotificationWithTimeout, useNotificationDispatch } from './NotificationContext'
+import { Input, Button } from '../styledElements'
 
 const BlogForm = ({ togglableRef }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
@@ -60,31 +61,49 @@ const BlogForm = ({ togglableRef }) => {
     <>
       <h2>create new</h2>
       <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input
-            data-testid="title"
-            value={newBlog.title}
-            onChange={handleTitleChange}
-          />
-        </div>
-        <div>
-          author:
-          <input
-            data-testid="author"
-            value={newBlog.author}
-            onChange={handleAuthorChange}
-          />
-        </div>
-        <div>
-          url:
-          <input
-            data-testid="url"
-            value={newBlog.url}
-            onChange={handleUrlChange}
-          />
-        </div>
-        <button type="submit">save</button>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <span>Title: </span>
+              </td>
+              <td>
+                <Input
+                  data-testid="title"
+                  value={newBlog.title}
+                  onChange={handleTitleChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Author: </span>
+              </td>
+              <td>
+                <Input
+                  data-testid="author"
+                  value={newBlog.author}
+                  onChange={handleAuthorChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Url: </span>
+              </td>
+              <td>
+                <Input
+                  data-testid="url"
+                  value={newBlog.url}
+                  onChange={handleUrlChange}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <Button type="submit" style={{margin: '10px 0px 10px 0px'}}>save</Button>
+        
       </form>
     </>
   )

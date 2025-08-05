@@ -1,4 +1,5 @@
 import { Link, BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { NavBar, FullPage, Hover } from './styledElements'
 
 import Users from './components/Users'
 import Home from './components/Home'
@@ -14,11 +15,9 @@ import { useEffect } from 'react'
 const App = () => {
 
   const padding = {
-    padding: 5,
-    color: 'black'
-  }
-  const colored = {
-    backgroundColor: '#C7C8CA'
+    padding: '5px 10px 5px 10px',
+    color: 'inherit',
+    textDecoration: 'none',
   }
   const userValue = useUserValue()
   const userDispatch = useUserDispatch()
@@ -32,13 +31,13 @@ const App = () => {
   }, [])
 
   return (
-    <div>
+    <FullPage>
       <Router>{userValue ?
-        <div style={colored}>
-          <Link style={padding} to="/">Blogs</Link>
-          <Link style={padding} to="/users">Users</Link>
+        <NavBar>
+          <Link style={padding} to="/"><Hover>Blogs</Hover></Link>
+          <Link style={padding} to="/users"><Hover>Users</Hover></Link>
           <LoginData />
-        </div>
+        </NavBar>
         : null
       }
         <h2>Blog app</h2>
@@ -49,7 +48,7 @@ const App = () => {
           <Route path="/blogs/:id" element={<BlogPage />} />
         </Routes>
       </Router>
-    </div>
+    </FullPage>
   )
 }
 

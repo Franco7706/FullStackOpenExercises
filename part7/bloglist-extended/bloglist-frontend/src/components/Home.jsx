@@ -24,7 +24,7 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <h2>blogs</h2>
+          <h2>Blogs</h2>
           <Notification />
           <Togglable buttonLabel={'create new'} ref={blogFormRef}>
             <BlogForm togglableRef={blogFormRef} />

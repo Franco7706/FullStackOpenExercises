@@ -3,6 +3,7 @@ import { useState } from "react"
 import blogService from '../services/blogs'
 import loginService from "../services/login"
 import { useUserDispatch } from "./UserContext"
+import { Button, Input } from "../styledElements"
 const Login = () => {
   const notificationDispatch = useNotificationDispatch()
   const [username, setUsername] = useState('')
@@ -32,8 +33,8 @@ const Login = () => {
       <h2>Login to application</h2>
       <form onSubmit={handleLogin}>
         <div>
-          username
-          <input
+          <span>Username: </span>
+          <Input
             data-testid="username"
             type="text"
             value={username}
@@ -42,8 +43,8 @@ const Login = () => {
           />
         </div>
         <div>
-          password
-          <input
+          <span>Password: </span>
+          <Input
             data-testid="password"
             type="password"
             value={password}
@@ -51,7 +52,7 @@ const Login = () => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <Button type="submit">login</Button>
       </form>
     </>
   )

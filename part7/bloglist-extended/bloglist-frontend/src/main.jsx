@@ -3,6 +3,7 @@ import App from './App'
 import { NotificationContextProvider } from './components/NotificationContext'
 import { UserContextProvider } from './components/UserContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import './index.css'
 
 const queryClient = new QueryClient()
 

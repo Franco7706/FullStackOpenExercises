@@ -5,6 +5,7 @@ import blogService from "../services/blogs"
 import { useNavigate, useParams } from 'react-router-dom'
 import Notification from './Notification'
 import { useState } from 'react'
+import { Button, Input, ListDiv, ListItem } from '../styledElements'
 
 const useField = (type) => {
   const [value, setValue] = useState('')
@@ -70,10 +71,10 @@ const BlogPage = () => {
   const commentBlogMutation = useMutation({
     mutationFn: blogService.postComment,
     onSuccess: (blog) => {
-      queryClient.invalidateQueries({ queryKey: ['blogs', id]})
+      queryClient.invalidateQueries({ queryKey: ['blogs', id] })
       newComment.reset()
     },
-    onError: (exception) => { printError(exception)}
+    onError: (exception) => { printError(exception) }
   })
   const blog = result.data
   if (!blog || !userValue) {
@@ -90,26 +91,27 @@ const BlogPage = () => {
   const createComment = (event) => {
     event.preventDefault()
     const commentText = newComment.input.value
-    commentBlogMutation.mutate({id: blog.id, text: commentText})
+    commentBlogMutation.mutate({ id: blog.id, text: commentText })
   }
   return (
     <div>
       <Notification />
-      <h1>{blog.title} {blog.author}</h1>
-
-      <div><a href={blog.url}>{blog.url}</a></div>
-      <div>{blog.likes} likes <button onClick={like}>like</button></div>
-      <div>Added by {blog.user.name}</div>
+      <h1>{blog.title}, by {blog.author}</h1>
+      <ListDiv>
+        <ListItem>URL: <a href={blog.url}>{blog.url}</a></ListItem>
+        <ListItem>{blog.likes} likes <Button onClick={like}>like</Button></ListItem>
+        <ListItem>Added by {blog.user.name}</ListItem>
+      </ListDiv>
       {userValue.name === blog.user.name ? (
         <div>
-          <button onClick={remove}>remove</button>
+          <Button onClick={remove}>remove</Button>
         </div>
       ) : null}
-      <h3>comments</h3>
+      <h3>Comments</h3>
       <div>
         <form onSubmit={createComment}>
-          <input {...newComment.input} />
-          <button type='submit'>add comment</button>
+          <Input {...newComment.input} />
+          <Button type='submit'>add comment</Button>
         </form>
       </div>
       <ul>
