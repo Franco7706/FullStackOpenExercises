@@ -6,6 +6,9 @@ const LoginData = () => {
   const userValue = useUserValue()
   const userDispatch = useUserDispatch()
   const notificationDispatch = useNotificationDispatch()
+  
+  if(userValue===null) return null
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     userDispatch({type: 'REMOVE'})
@@ -14,9 +17,9 @@ const LoginData = () => {
   }
 
   return(
-      <p>
+      <>
         {userValue.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
+      </>
   )
 }
 

@@ -1,23 +1,27 @@
-import { useEffect, useRef } from 'react'
+import { Link, BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import Login from './components/Login'
-import BlogForm from './components/BlogForm'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
+import Users from './components/Users'
+import Home from './components/Home'
 import LoginData from './components/LoginData'
-import List from './components/List'
+import { useUserDispatch, useUserValue } from './components/UserContext'
+import User from './components/User'
+import BlogPage from './components/BlogPage'
 
 import blogService from './services/blogs'
 
-import {
-  useUserDispatch, useUserValue
-} from './components/UserContext'
-
+import { useEffect } from 'react'
 
 const App = () => {
-  const userDispatch = useUserDispatch()
-  const userValue = useUserValue()
 
+  const padding = {
+    padding: 5,
+    color: 'black'
+  }
+  const colored = {
+    backgroundColor: '#C7C8CA'
+  }
+  const userValue = useUserValue()
+  const userDispatch = useUserDispatch()
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -27,26 +31,24 @@ const App = () => {
     }
   }, [])
 
-  const blogFormRef = useRef()
-
   return (
     <div>
-      {userValue === null ? (
-        <div>
-          <Notification />
-          <Login />
-        </div>
-      ) : (
-        <div>
-          <h2>blogs</h2>
-          <Notification />
+      <Router>{userValue ?
+        <div style={colored}>
+          <Link style={padding} to="/">Blogs</Link>
+          <Link style={padding} to="/users">Users</Link>
           <LoginData />
-          <Togglable buttonLabel={'create'} ref={blogFormRef}>
-            <BlogForm togglableRef={blogFormRef} />
-          </Togglable>
-          <List />
         </div>
-      )}
+        : null
+      }
+        <h2>Blog app</h2>
+        <Routes>
+          <Route path="/users" element={<Users />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/blogs/:id" element={<BlogPage />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
